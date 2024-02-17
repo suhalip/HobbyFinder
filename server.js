@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 // Route to handle form submission
 app.post('/search-hobbies', async (req, res) => {
     const query = req.body.q; // Assuming your input field's name is 'q'
-    const api_key = 'Key'; // Replace with your actual OpenAI API key
+    const api_key = 'key'; // Replace with your actual OpenAI API key
 
     try {
         const response = await axios.post(
