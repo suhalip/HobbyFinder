@@ -14,22 +14,32 @@ app.get('/', (req, res) => {
 
 // Route to handle form submission
 app.post('/search-hobbies', async (req, res) => {
-    const query = req.body.q; // Assuming your input field's name is 'q'
+    const query = req.body.q;
+    const location = req.body.l;
+    const date = req.body.date;
     const api_key = 'key'; // Replace with your actual OpenAI API key
+    let contentQuery;
 
+    if (query && location && date) {
+        contentQuery = `Best places to go ${query} in ${location}, around ${date}.`;
+    } else if (query && location) {
+        contentQuery = `Best places to go ${query} in ${location}.`;
+    } else {
+        contentQuery = `Suggest places for ${query}.`;
+    }
     try {
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {
-                model: 'gpt-3.5-turbo-0613', // Choose the model you prefer
+                model: 'gpt-3.5-turbo', // Choose the model you prefer
                     messages: [
         {
             role: "user",
-            content: `Suggest places for someone who likes ${query}`
+            content: contentQuery
         }
     ],
                 temperature: 0.6,
-                max_tokens: 60,
+                max_tokens: 500,
                 top_p: 1.0,
                 frequency_penalty: 0.0,
                 presence_penalty: 0.0,
@@ -44,9 +54,8 @@ app.post('/search-hobbies', async (req, res) => {
 
                 // Extract completion text from the response
         const completionText = response.data.choices[0].message.content;
-
-        // Send the completion text back to the client for display
-        res.send(completionText);
+    // Send the HTML formatted text back to the client for display
+    res.send(completionText);
     } catch (error) {
         console.error('Error:', error);
     res.send('Error retrieving suggestions. Please try again.');

@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Bar - Easy tutorials</title>
     <link rel="stylesheet" href="style.css">
+    <script src="server.js"></script>
 </head>
 <body>
 
@@ -16,6 +17,34 @@
             <input type="text" placeholder="Search hobbies..." name="q" />
             <button type="submit"><img src="images/search.png" /></button>
         </form>
+        <br>
+        <form action="/search-hobbies" method="post" class="search-location">
+            <input type="text" placeholder="Location" name="l"/>
+            <input type="date" placeholder="MM/DD/YY" name="date">
+            </form>
+        <div class="loader" id="loader" style="display: none;"></div>
+
     </div>
+    <script>
+        document.querySelector('.search-bar').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loader').style.display = 'block'; // Show loader
+            const formData = new FormData(this);
+            fetch('/search-hobbies', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(text => {
+                    console.log("Response text:", text); // Check the response text
+                    document.getElementById('completion-container').innerHTML = text;
+                    document.getElementById('loader').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('loader').style.display = 'none';
+                });
+        });
+    </script>
 </body>
 </html>
