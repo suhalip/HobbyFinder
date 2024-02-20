@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const port = 3001; // You can use any available port
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('.')); // Serve static files from 'public' directory
 
@@ -52,10 +53,8 @@ app.post('/search-hobbies', async (req, res) => {
             }
         );
 
-                // Extract completion text from the response
         const completionText = response.data.choices[0].message.content;
-    // Send the HTML formatted text back to the client for display
-    res.send(completionText);
+        res.send(completionText);
     } catch (error) {
         console.error('Error:', error);
     res.send('Error retrieving suggestions. Please try again.');
