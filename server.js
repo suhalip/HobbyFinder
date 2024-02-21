@@ -5,7 +5,6 @@ const path = require('path');
 const app = express();
 const port = 3001; // You can use any available port
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('.')); // Serve static files from 'public' directory
 
@@ -18,27 +17,30 @@ app.post('/search-hobbies', async (req, res) => {
     const query = req.body.q;
     const location = req.body.l;
     const date = req.body.date;
-    const api_key = 'key'; // Replace with your actual OpenAI API key
+    const api_key = 'key';// Replace with your actual OpenAI API key
+
     let contentQuery;
 
     if (query && location && date) {
-        contentQuery = `Best places to go ${query} in ${location}, around ${date}.`;
+        contentQuery = `Suggest places for ${query} in ${location}, around ${date} with details of the places.`;
     } else if (query && location) {
-        contentQuery = `Best places to go ${query} in ${location}.`;
-    } else {
-        contentQuery = `Suggest places for ${query}.`;
+        contentQuery = `Suggest places for ${query} in ${location} with details of the places.`;
+    } else if(location && date){
+        contentQuery = `Suggest things to do in ${location}, around ${date}`
+    } else{
+        contentQuery = `Suggest places for ${query} with details of the places.`;
     }
     try {
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {
                 model: 'gpt-3.5-turbo', // Choose the model you prefer
-                    messages: [
-        {
-            role: "user",
-            content: contentQuery
-        }
-    ],
+                messages: [
+                    {
+                        role: "user",
+                        content: contentQuery
+                    }
+                ],
                 temperature: 0.6,
                 max_tokens: 500,
                 top_p: 1.0,
@@ -55,11 +57,11 @@ app.post('/search-hobbies', async (req, res) => {
 
         const completionText = response.data.choices[0].message.content;
         res.send(completionText);
+
     } catch (error) {
         console.error('Error:', error);
-    res.send('Error retrieving suggestions. Please try again.');
-}
-
+        res.send('Error retrieving suggestions. Please try again.');
+    }
 });
 
 app.listen(port, () => {

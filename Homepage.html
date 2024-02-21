@@ -2,25 +2,26 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hobby Finder inc.</title>
+    <title>Hobby Finder Inc.</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="header">
-        <h1>Hobby Finder inc.</h1>
+        <h1>Hobby Finder Inc.</h1>
     </header>
 
     <div class="container">
-        <form action="/search-hobbies" method="post" class="search-bar">
+        <form id="search_form" action="/search-hobbies" method="post" class="search-bar" >
             <input type="text" placeholder="Search hobbies..." name="q" />
+
             <button type="submit"><img src="images/search.png" /></button>
         </form>
         <br>
-        <form action="/search-hobbies" method="post" class="search-location">
-            <input type="text" placeholder="Location" name="l"/>
-            <input type="date" placeholder="MM/DD/YY" name="date">
-            </form>
+        <form action="/search-hobbies" method="post" class="search-bar">
+            <input form="search_form" type="text" placeholder="Location" name="l" />
+            <input form="search_form" type="date" placeholder="MM/DD/YY" name="date" />
+        </form>
     </div>
 </body>
 </html>

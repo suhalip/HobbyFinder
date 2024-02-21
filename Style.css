@@ -40,18 +40,30 @@
     backdrop-filter: blur(4px) saturate(180%);
 }
 
-    .search-bar input {
-        background: transparent;
-        flex: 1;
-        border: 0;
-        outline: none;
-        padding: 24px 20px;
-        font-size: 20px;
-        color: #cac7ff;
-    }
+    .search-bar input,
+.search-location input {
+    background: transparent !important;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: #cac7ff;
+}
 
 ::placeholder {
     color: #cac7ff;
+}
+
+.search-bar input:-webkit-autofill,
+.search-location input:-webkit-autofill,
+.search-bar input:-webkit-autofill:hover,
+.search-location input:-webkit-autofill:hover,
+.search-bar input:-webkit-autofill:focus,
+.search-location input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #cac7ff;
+    -webkit-box-shadow: 0 0 0 0 transparent inset !important; /* Try to force transparency */
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .search-bar button img {
@@ -72,31 +84,6 @@
 .header h1 {
     position: relative;
     z-index: 2; /* Ensure header text stays above other content */
-}
-
-.search-location{
-    width: 100%;
-    max-width: 700px;
-    background: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    border-radius: 60px;
-    padding: 10px 20px;
-    backdrop-filter: blur(4px) saturate(180%);
-}
-
-    .search-location input {
-        background: transparent;
-        flex: 1;
-        border: 0;
-        outline: none;
-        padding: 24px 20px;
-        font-size: 20px;
-        color: #cac7ff;
-    }
-
-::placeholder {
-    color: #cac7ff;
 }
 
 .loader {
