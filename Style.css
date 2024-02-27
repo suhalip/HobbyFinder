@@ -9,13 +9,11 @@
     text-align: center;
     color: #cac7ff;
     position: absolute;
-    top: calc(50% - 100px); /* Adjust as needed */
+    top: calc(50% - 150px); /* Adjust as needed */
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2; /* Ensure header stays above other content */
 }
-
-
 
 .container {
     width: 100%;
@@ -25,12 +23,13 @@
     background-position: center;
     background-size: cover;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative; /* Make the container position relative */
 }
 
-.search-bar {
+.search-bar{
     width: 100%;
     max-width: 700px;
     background: rgba(255, 255, 255, 0.2);
@@ -41,18 +40,30 @@
     backdrop-filter: blur(4px) saturate(180%);
 }
 
-    .search-bar input {
-        background: transparent;
-        flex: 1;
-        border: 0;
-        outline: none;
-        padding: 24px 20px;
-        font-size: 20px;
-        color: #cac7ff;
-    }
+    .search-bar input,
+.search-location input {
+    background: transparent !important;
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 24px 20px;
+    font-size: 20px;
+    color: #cac7ff;
+}
 
 ::placeholder {
     color: #cac7ff;
+}
+
+.search-bar input:-webkit-autofill,
+.search-location input:-webkit-autofill,
+.search-bar input:-webkit-autofill:hover,
+.search-location input:-webkit-autofill:hover,
+.search-bar input:-webkit-autofill:focus,
+.search-location input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #cac7ff;
+    -webkit-box-shadow: 0 0 0 0 transparent inset !important; /* Try to force transparency */
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .search-bar button img {
@@ -73,4 +84,22 @@
 .header h1 {
     position: relative;
     z-index: 2; /* Ensure header text stays above other content */
+}
+
+.loader {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
