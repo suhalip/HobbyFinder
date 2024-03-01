@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="Style.css"> <!-- Ensure you link to your CSS file -->
+</head>
+<body>
+    <div id="results-container">
+        <h1>Search Results</h1>
+        <div id="results"></div>
+    </div>
+    <script>
+        // JavaScript to parse the query string and display results
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const results = params.get('results');
+            if (results) {
+                document.getElementById('results').innerHTML = decodeURIComponent(results);
+            } else {
+                document.getElementById('results').textContent = 'No results found.';
+            }
+        });
+    </script>
+</body>
+</html>
