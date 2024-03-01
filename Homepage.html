@@ -6,13 +6,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header class="header">
         <h1>Hobby Finder Inc.</h1>
     </header>
-
     <div class="container">
-        <form id="search_form" action="/search-hobbies" method="post" class="search-bar" >
+
+        <form id="search_form" action="/search-hobbies" method="get" class="search-bar" >
             <input type="text" placeholder="Search hobbies..." name="q" />
 
             <button type="submit"><img src="images/search.png" /></button>
@@ -22,6 +21,8 @@
             <input form="search_form" type="text" placeholder="Location" name="l" />
             <input form="search_form" type="date" placeholder="MM/DD/YY" name="date" />
         </form>
+
+        <form id="results-container"></form>
     </div>
 </body>
 </html>
