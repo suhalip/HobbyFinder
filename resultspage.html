@@ -7,21 +7,29 @@
     <link rel="stylesheet" href="Style.css"> <!-- Ensure you link to your CSS file -->
 </head>
 <body>
-    <div id="results-container">
+<div id="favorite-list" class="favorite-list">
+    <h3>Favorites</h3>
+    <ul id="favorites"></ul>
+</div>
+    <div id="results-container" class="results-container">
         <h1>Search Results</h1>
         <div id="results"></div>
     </div>
     <script>
-        // JavaScript to parse the query string and display results
-        document.addEventListener('DOMContentLoaded', function() {
-            const params = new URLSearchParams(window.location.search);
-            const results = params.get('results');
-            if (results) {
-                document.getElementById('results').innerHTML = decodeURIComponent(results);
-            } else {
-                document.getElementById('results').textContent = 'No results found.';
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const results = params.get('results');
+    if (results) {
+        // Regular expression to split the text based on numerical list items
+        const items = results.split(/(?=\d+\.\s)/);
+        // Create a tile for each item
+        const tiles = items.map(item => `<div class="tile">${item.trim()}</div>`).join('');
+        document.getElementById('results').innerHTML = tiles;
+    }
+    else {
+        document.getElementById('results').textContent = 'No results found.';
+    }
+    });
     </script>
 </body>
 </html>

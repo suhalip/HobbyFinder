@@ -6,6 +6,8 @@ const backgrounds = [
   'images/background5.png',
   'images/background6.png',
   'images/background7.png',
+  'images/background8.png',
+  'download.png',
   // Add more image paths as necessary
 ];
 
