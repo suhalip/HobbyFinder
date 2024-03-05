@@ -48,10 +48,11 @@
         const listItem = document.createElement('li');
         listItem.textContent = titleMatch[1].trim(); // Use the captured title
         document.getElementById('favorites').appendChild(listItem);
+
+        // Disable the button after adding to favorites
+        button.disabled = true;
     }
 }
-
-
     </script>
 </body>
 </html>
