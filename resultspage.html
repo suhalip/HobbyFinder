@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    <link rel="stylesheet" href="Style.css"> <!-- Ensure you link to your CSS file -->
+    <link rel="stylesheet" href="resultspage.css">
+        <script src="background.js"></script>
 </head>
 <body>
+<div class="container">
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
             <h3>Favorites</h3>
@@ -18,6 +20,7 @@
             <div id="results"></div>
         </div>
     </div>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const params = new URLSearchParams(window.location.search);
