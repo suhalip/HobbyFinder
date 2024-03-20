@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="ResultPgStyle.css">
+        <script src="background.js"></script>
+    <link rel="import" href="Homepage.html">
+</head>
+<body>
+<div class="container">
+        <header class="header">
+            <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
+        </header>
+    <div class="resultspage-container">
+        <div id="favorite-list" class="favorite-list">
+            <h3>Favorites</h3>
+            <ul id="favorites"></ul>
+        </div>
+        <div id="results-item" action="/search-hobbies"  >
+            <h1>Hobby finder inc.</h1>
+            <input type="text" placeholder="Search here..." class="search-bar input">
+            <div id="results"></div>
+        </div>
+    </div>
+</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+    const location = params.get('l'); // Get the location parameter
+    const results = params.get('results');
+
+    // Select the element where the location should be displayed
+    const locationElement = document.querySelector('.blue-text');
+
+    if (location) {
+        // Update the text content with the user-provided location
+        locationElement.textContent = ` ${location}`;
+    } else {
+        // Provide a default text in case no location is specified
+        locationElement.textContent = null;
+    }
+            if (results) {
+                const items = results.split(/(?=\d+\.\s)/);
+                const tiles = items.map(item => `
+                    <div class="result-item">
+                        ${item.trim()}
+                        <button class="add-to-favorites" onclick="addToFavorites(this)">Add to Favorites</button>
+                    </div>
+                `).join('');
+                document.getElementById('results').innerHTML = tiles;
+            } else {
+                document.getElementById('results').textContent = 'No results found.';
+            }
+        });
+
+        function addToFavorites(button) {
+    const fullText = button.parentNode.textContent.replace('Add to Favorites', '').trim();
+    // Use a regular expression to extract the title, excluding the leading number and trailing description
+    const titleMatch = fullText.match(/^\d+\.\s+(.*?)(?:\s+-|$)/);
+    if (titleMatch && titleMatch[1]) {
+        // Create a new list item for the favorite
+        const listItem = document.createElement('li');
+        listItem.textContent = titleMatch[1].trim(); // Use the captured title
+        document.getElementById('favorites').appendChild(listItem);
+
+        // Disable the button after adding to favorites
+        button.disabled = true;
+    }
+}
+
+    </script>
+</body>
+</html>
