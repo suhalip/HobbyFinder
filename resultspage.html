@@ -28,19 +28,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const params = new URLSearchParams(window.location.search);
-    const location = params.get('l'); // Get the location parameter
     const results = params.get('results');
 
     // Select the element where the location should be displayed
     const locationElement = document.querySelector('.blue-text');
 
-    if (location) {
-        // Update the text content with the user-provided location
-        locationElement.textContent = ` ${location}`;
-    } else {
-        // Provide a default text in case no location is specified
-        locationElement.textContent = null;
-    }
             if (results) {
                 const items = results.split(/(?=\d+\.\s)/);
                 const tiles = items.map(item => `
