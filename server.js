@@ -13,11 +13,11 @@ app.get('/', (req, res) => {
 });
 
 // Route to handle form submission
-app.post('/search-hobbies', async (req, res) => {
-    const query = req.body.q;
-    const location = req.body.l;
-    const date = req.body.date;
-    const api_key = 'key';// Replace with your actual OpenAI API key
+app.get('/search-hobbies', async (req, res) => {
+    const query = req.query.q;
+    const location = req.query.l;
+    const date = req.query.date;
+    const api_key = 'Key';// Replace with your actual OpenAI API key
 
     let contentQuery;
 
@@ -54,10 +54,15 @@ app.post('/search-hobbies', async (req, res) => {
                 }
             }
         );
-
+            // Assuming the response contains the data you want to display
         const completionText = response.data.choices[0].message.content;
-        res.send(completionText);
+        // Generate HTML string based on the completionText or any other logic you have
+        //const resultHTML = `<div class="search-result">${completionText}</div>`;
+        //res.send(resultHTML);
 
+        res.redirect(`/resultspage.html?results=${(completionText)}`)
+        //const completionText = response.data.choices[0].message.content;
+        //        res.json(completionText);
     } catch (error) {
         console.error('Error:', error);
         res.send('Error retrieving suggestions. Please try again.');
