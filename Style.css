@@ -124,3 +124,32 @@
 .resultspage-container {
     display: flex;
 }
+
+#suggestions-dropdown {
+    position: absolute; /* Allows the dropdown to float over content below */
+    top: 225%;
+    width: calc(100% - 42px); /* Aligns width with input field */
+    max-height: 300px; /* Limits the height of the dropdown */
+    overflow-y: auto; /* Enables vertical scrolling if there are many suggestions */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none; /* Removes the top border to blend with the input field */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Adds a subtle shadow for depth */
+    z-index: 2; /* Ensures the dropdown appears above other content */
+    display: none; /* Initially hidden */
+}
+
+/* Individual suggestion item styling */
+.suggestion-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee; /* Separates items */
+    cursor: pointer; /* Indicates an interactive item */
+}
+
+.suggestion-item:last-child {
+    border-bottom: none; /* Removes bottom border for the last item */
+}
+
+.suggestion-item:hover, .suggestion-item:focus {
+    background-color: #f8f8f8; /* Highlights item on hover/focus */
+}
