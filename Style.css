@@ -86,14 +86,6 @@
     z-index: 2; /* Ensure header text stays above other content */
 }
 
-
-.favorite-list {
-    width: 400px;
-    background-color: #f3f3f3;
-    padding: 20px;
-    overflow-y: auto;
-}
-
 .results-container {
     flex-grow: 1;
     padding: 20px;
