@@ -86,7 +86,6 @@
     padding: 20px;
     margin-bottom: 20px;
     color: #cac7ff; /* Text color */
-    position: relative;
     flew-grow: 1;
     overflow-y: auto;
 }
@@ -123,18 +122,4 @@
 .resultspage-container {
     color: #cac7ff;
     display: flex;
-}
-
-.add-to-favorites {
-    position: absolute; /* Absolute positioning relative to the .result-item */
-    bottom: 10px; /* Top margin from the container */
-    right: 10px; /* Right margin from the container */
-    cursor: pointer;
-    background: #ff416c; /* Button background color */
-    color: #ffffff; /* Button text color */
-    border: none;
-    border-radius: 50%;
-    transform: rotate(-40deg);
-    transform-origin: 0 100%;
-    padding: 5px 10px;
 }
