@@ -123,3 +123,14 @@
     color: #cac7ff;
     display: flex;
 }
+
+/* Style for the event image */
+.event-tile img {
+    max-width: 200px; /* Set the maximum width of the image */
+    max-height: 200px; /* Set the maximum height of the image */
+    width: auto; /* Ensure the image width adjusts proportionally */
+    height: auto; /* Ensure the image height adjusts proportionally */
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    object-fit: contain; /* Fit the image inside the fixed size slot */
+}
