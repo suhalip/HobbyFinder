@@ -1,33 +1,33 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Hobby Finder Inc.</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
     <link rel="stylesheet" href="style.css">
-    <script src="background.js"></script>
+    <script src="autocomplete.js"></script>
+    <style>
+    </style>
 </head>
 <body>
     <header class="header">
         <h1>Hobby Finder Inc.</h1>
     </header>
     <div class="container">
-
-        <form id="search_form" action="ResultsPage.html" method="get" class="search-bar" >
+        <form id="search_form" action="/search-hobbies" method="get" class="search-bar" >
+            <div id="suggestions-dropdown" style="display:none;"></div>
             <input type="text" placeholder="Search hobbies..." name="q" />
-
             <button type="submit"><img src="images/search.png" /></button>
         </form>
         <br>
         <form action="/search-hobbies" method="post" class="search-bar">
-            <input form="search_form" type="text" placeholder="Location" name="l" />
-            <input form="search_form" type="date" placeholder="MM/DD/YYYY" name="date" />
+            <input form="search_form" type="text" id="my-location-input" placeholder="Location" name="l" />
+            <input form="search_form" type="date" placeholder="MM/DD/YY" name="date" />
         </form>
-
     </div>
-
-    <div id="search_results"></div>
-
-    <script src="TicketMasterJS.js"></script>
 </body>
 </html>
-

@@ -86,6 +86,7 @@
     padding: 20px;
     margin-bottom: 20px;
     color: #cac7ff; /* Text color */
+    position: relative;
     flew-grow: 1;
     overflow-y: auto;
 }
@@ -122,4 +123,30 @@
 .resultspage-container {
     color: #cac7ff;
     display: flex;
+}
+
+.add-to-favorites {
+    position: absolute; /* Absolute positioning relative to the .result-item */
+    bottom: 0px; /* Top margin from the container */
+    right: 10px; /* Right margin from the container */
+    cursor: pointer;
+    background: transparent; /* Button background color */
+    color: #ffffff; /* Button text color */
+    border: none;
+    transform-origin: 0 100%;
+    padding: 5px 10px;
+}
+
+.add-to-favorites img {
+  width: 30px; /* Make image fill the button */
+}
+
+.event-tile img {
+    max-width: 200px; /* Set the maximum width of the image */
+    max-height: 200px; /* Set the maximum height of the image */
+    width: auto; /* Ensure the image width adjusts proportionally */
+    height: auto; /* Ensure the image height adjusts proportionally */
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    object-fit: contain; /* Fit the image inside the fixed size slot */
 }
