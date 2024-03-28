@@ -133,4 +133,172 @@
     display: block; /* Make the image a block element */
     margin: 0 auto; /* Center the image horizontally */
     object-fit: contain; /* Fit the image inside the fixed size slot */
+}* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 5%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(images/background.png);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Make the container position relative */
+}
+.header {
+    text-align: center;
+    color: #cac7ff;
+    margin-bottom: 30px;
+}
+
+    .header h1 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+.blue-text {
+    color: #286bc7;
+}
+
+
+/* Chuks codeeeeeeeeeeeeeeeeeeeeeeeeee */
+}
+.tab-buttons {
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-right: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+    .tab-btn.active {
+        border-bottom: 2px solid #286bc7;
+    }
+/*  Chuks codeeeeeeeeeeeeeeeeeeeeeeeeee*/
+}
+
+
+
+
+
+
+
+
+
+
+.search-bar {
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 30px;
+    display: flex;
+}
+
+    .search-bar input {
+        flex: 1;
+        background: transparent; /* Remove background */
+        border: none;
+        border-bottom: 2px solid #286bc7;
+        padding: 10px;
+        font-size: 16px;
+        color: #cac7ff;
+        outline: none;
+    }
+
+    .search-bar button {
+        width: 60px;
+        height: 36px;
+        background: #286bc7;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .search-bar button img {
+            width: 20px;
+            height: 20px;
+        }
+
+
+.search-results {
+    width: 100%;
+}
+
+.favorite-list {
+    width: 400px;
+    background-color: transparent;
+    padding: 20px;
+    overflow-y: auto;
+    color: #cac7ff;
+}
+
+.result-item {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #cac7ff; /* Text color */
+    flew-grow: 1;
+    overflow-y: auto;
+}
+
+    .result-item h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+
+    }
+
+    .result-item p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .result-item cite {
+        font-style: italic;
+        color: #999999;
+    }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .favorite-list {
+        width: 100%;
+        height: auto;
+    }
+    .results-item {
+        padding: 20px 10px;
+    }
+}
+
+.resultspage-container {
+    color: #cac7ff;
+    display: flex;
+}
+
+/* Style for the event image */
+.event-tile img {
+    max-width: 200px; /* Set the maximum width of the image */
+    max-height: 200px; /* Set the maximum height of the image */
+    width: auto; /* Ensure the image width adjusts proportionally */
+    height: auto; /* Ensure the image height adjusts proportionally */
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    object-fit: contain; /* Fit the image inside the fixed size slot */
 }
