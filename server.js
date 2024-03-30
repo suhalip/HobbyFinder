@@ -17,7 +17,7 @@ app.get('/search-hobbies', async (req, res) => {
     const query = req.query.q;
     const location = req.query.l;
     const date = req.query.date;
-    const api_key = 'Key';// Replace with your actual OpenAI API key
+    const api_key = 'key';// Replace with your actual OpenAI API key
 
     let contentQuery;
 

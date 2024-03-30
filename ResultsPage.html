@@ -6,55 +6,63 @@
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
         <script src="background.js"></script>
+    <script src="TicketMasterJS.js"></script>
     <link rel="import" href="Homepage.html">
 </head>
 <body>
 <div class="container">
         <header class="header">
             <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
+        <div class="tab-buttons">
+                <button id="eventsTabBtn" class="tab-btn active" onclick="showTab('events')">Events</button>
+                <button id="stuffTabBtn" class="tab-btn" onclick="showTab('stuff')">Places</button>
+            </div>
         </header>
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
             <h3>Favorites</h3>
             <ul id="favorites"></ul>
         </div>
-        <div id="results-item" action="/search-hobbies"  >
-            <h1>Hobby finder inc.</h1>
-            <input type="text" placeholder="Search here..." class="search-bar input">
             <div id="results"></div>
-        </div>
     </div>
 </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Load favorites from sessionStorage when the document is loaded
-        loadFavorites();
+    function loadAndDisplayResults() {
+    // Load favorites from sessionStorage
+    loadFavorites();
 
-        const params = new URLSearchParams(window.location.search);
-        const location = params.get('l');
-        const results = params.get('results');
-        const locationElement = document.querySelector('.blue-text');
+    const params = new URLSearchParams(window.location.search);
+    const location = params.get('l');
+    const results = params.get('results');
+    const locationElement = document.querySelector('.blue-text');
 
-        if (location) {
-            locationElement.textContent = ` ${location}`;
-        } else {
-            locationElement.textContent = null;
-        }
+    if (location) {
+        locationElement.textContent = ` ${location}`;
+    } else {
+        locationElement.textContent = null;
+    }
 
-        if (results) {
-            const items = results.split(/(?=\d+\.\s)/);
-            const tiles = items.map(item => `
-                <div class="result-item">
-                    ${item.trim()}
-<button class="add-to-favorites" onclick="addToFavorites(this)">
-  <img src="images/like-button.png" />
-</button>                </div>
-            `).join('');
-            document.getElementById('results').innerHTML = tiles;
-        } else {
-            document.getElementById('results').textContent = 'No results found.';
-        }
-    });
+    if (results) {
+        const items = results.split(/(?=\d+\.\s)/);
+        const tiles = items.map(item => `
+            <div class="result-item">
+                ${item.trim()}
+                <button class="add-to-favorites" onclick="addToFavorites(this)">
+                    <img src="images/like-button.png" />
+                </button>
+            </div>
+        `).join('');
+        document.getElementById('results').innerHTML = tiles;
+    } else {
+        document.getElementById('results').textContent = 'No results found.';
+    }
+}
+
+// Optionally, you can still call this function when the DOM content has fully loaded,
+// or you can choose to call it based on other events/conditions.
+document.addEventListener('DOMContentLoaded', function() {
+    loadAndDisplayResults();
+});
 
     function addToFavorites(button) {
         const fullText = button.parentNode.textContent.replace('Add to Favorites', '').trim();
@@ -91,6 +99,25 @@
             });
         }
     }
+
+    function showTab(tabName) {
+            if (tabName === 'events') {
+                // Show events tab and fetch/display events
+                document.getElementById('eventsTabBtn').classList.add('active');
+                document.getElementById('stuffTabBtn').classList.remove('active');
+                document.getElementById('event-tiles').style.display = 'block';
+                document.getElementById('favorite-list').style.display = 'block';
+                document.getElementById('stuffLink').style.display = 'none';
+            } else if (tabName === 'stuff') {
+                // Show stuff tab and hide events
+                document.getElementById('eventsTabBtn').classList.remove('active');
+                document.getElementById('stuffTabBtn').classList.add('active');
+                document.getElementById('event-tiles').style.display = 'none';
+                document.getElementById('favorite-list').style.display = 'none';
+                document.getElementById('stuffLink').style.display = 'block';
+
+            }
+        }
     </script>
 </body>
 </html>

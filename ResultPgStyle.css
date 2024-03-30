@@ -150,3 +150,57 @@
     margin: 0 auto; /* Center the image horizontally */
     object-fit: contain; /* Fit the image inside the fixed size slot */
 }
+
+ {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 5%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(images/background.png);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Make the container position relative */
+}
+.header {
+    text-align: center;
+    color: #cac7ff;
+    margin-bottom: 30px;
+}
+
+    .header h1 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+.blue-text {
+    color: #286bc7;
+}
+
+.tab-buttons {
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-right: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+    .tab-btn.active {
+        border-bottom: 2px solid #286bc7;
+    }
+

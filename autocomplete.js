@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Your code here
-
-    const accessToken = 'key';
+    const accessToken = 'pk.eyJ1Ijoic3VoYWxpcCIsImEiOiJjbHUxbGd6NGEwNGd1Mmtxc2dxY253c29rIn0.LKWiME2h5p4K_PsuDBuXHA';
     const locationInput = document.getElementById('my-location-input');
     const suggestionsDropdown = document.getElementById('suggestions-dropdown');
 
