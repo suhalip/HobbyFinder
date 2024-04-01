@@ -5,119 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
-        <script src="background.js"></script>
-    <script src="TicketMasterJS.js"></script>
-    <link rel="import" href="Homepage.html">
 </head>
 <body>
 <div class="container">
-        <header class="header">
-            <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
-        <div class="tab-buttons">
-                <button id="eventsTabBtn" class="tab-btn active" onclick="showTab('events')">Events</button>
-                <button id="stuffTabBtn" class="tab-btn" onclick="showTab('stuff')">Places</button>
-            </div>
-        </header>
+    <header class="header">
+        <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
+    </header>
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
             <h3>Favorites</h3>
             <ul id="favorites"></ul>
         </div>
-            <div id="results"></div>
+        <!-- Added title for the events section -->
+        <div id="events" class="events-container">
+            <h2>Events</h2> <!-- Title for the events section -->
+            <div id="results" class="results-container"></div>
+        </div>
+        <!-- Added title for the suggestions section -->
+        <div id="suggestions" class="suggestions-container">
+            <h2>Suggestions</h2> <!-- Title for the suggestions section -->
+        </div>
     </div>
 </div>
-    <script>
-    function loadAndDisplayResults() {
-    // Load favorites from sessionStorage
-    loadFavorites();
 
-    const params = new URLSearchParams(window.location.search);
-    const location = params.get('l');
-    const results = params.get('results');
-    const locationElement = document.querySelector('.blue-text');
+<script>
+    async function getData() {
+        const storedData = localStorage.getItem('formattedData');
+        const data = JSON.parse(storedData);
 
-    if (location) {
-        locationElement.textContent = ` ${location}`;
-    } else {
-        locationElement.textContent = null;
-    }
-
-    if (results) {
-        const items = results.split(/(?=\d+\.\s)/);
-        const tiles = items.map(item => `
-            <div class="result-item">
-                ${item.trim()}
-                <button class="add-to-favorites" onclick="addToFavorites(this)">
-                    <img src="images/like-button.png" />
-                </button>
-            </div>
-        `).join('');
-        document.getElementById('results').innerHTML = tiles;
-    } else {
-        document.getElementById('results').textContent = 'No results found.';
-    }
-}
-
-// Optionally, you can still call this function when the DOM content has fully loaded,
-// or you can choose to call it based on other events/conditions.
-document.addEventListener('DOMContentLoaded', function() {
-    loadAndDisplayResults();
-});
-
-    function addToFavorites(button) {
-        const fullText = button.parentNode.textContent.replace('Add to Favorites', '').trim();
-        const titleMatch = fullText.match(/^\d+\.\s+(.*?)(?:\s+[-:]|$)/);
-
-        if (titleMatch && titleMatch[1]) {
-            const listItem = document.createElement('li');
-            listItem.textContent = titleMatch[1].trim();
-            document.getElementById('favorites').appendChild(listItem);
-
-            button.disabled = true;
-
-            // Save favorites to sessionStorage
-            saveFavorites();
+        if (!data) {
+            console.error('No data found');
+            return;
         }
-    }
 
-    function saveFavorites() {
-        const favoriteItems = document.querySelectorAll('#favorites li');
-        const favorites = [];
-        favoriteItems.forEach(item => {
-            favorites.push(item.textContent);
+        const eventsContainer = document.getElementById('results');
+        data.events.forEach(event => {
+            const eventElement = document.createElement('div');
+            eventElement.classList.add('event');
+            eventElement.innerHTML = `
+                <img src="${event.imageUrl}" alt="Event image" class="event-image">
+                <div class="event-info">
+                    <h3 class="event-title">${event.name}</h3>
+                    <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
+                    <p class="event-location">Location: ${event.location}</p>
+                    <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
+                </div>
+            `;
+            eventsContainer.appendChild(eventElement);
         });
-        sessionStorage.setItem('favorites', JSON.stringify(favorites));
     }
 
-    function loadFavorites() {
-        const favorites = JSON.parse(sessionStorage.getItem('favorites'));
-        if (favorites) {
-            favorites.forEach(favorite => {
-                const listItem = document.createElement('li');
-                listItem.textContent = favorite;
-                document.getElementById('favorites').appendChild(listItem);
-            });
+    function displaySuggestions() {
+        const storedData = localStorage.getItem('formattedData');
+        if (!storedData) {
+            console.error('No data found in localStorage.');
+            return;
         }
+
+        const data = JSON.parse(storedData);
+        if (!data.suggestions || data.suggestions.length === 0) {
+            console.log('No suggestions available.');
+            return;
+        }
+
+        const suggestionsContainer = document.getElementById('suggestions');
+        suggestionsContainer.innerHTML = ''; // Clear before appending new items
+
+        const fragment = document.createDocumentFragment();
+        data.suggestions.forEach(suggestion => {
+            const listItem = document.createElement('li');
+            listItem.textContent = suggestion;
+            fragment.appendChild(listItem);
+        });
+
+        suggestionsContainer.appendChild(fragment);
     }
 
-    function showTab(tabName) {
-            if (tabName === 'events') {
-                // Show events tab and fetch/display events
-                document.getElementById('eventsTabBtn').classList.add('active');
-                document.getElementById('stuffTabBtn').classList.remove('active');
-                document.getElementById('event-tiles').style.display = 'block';
-                document.getElementById('favorite-list').style.display = 'block';
-                document.getElementById('stuffLink').style.display = 'none';
-            } else if (tabName === 'stuff') {
-                // Show stuff tab and hide events
-                document.getElementById('eventsTabBtn').classList.remove('active');
-                document.getElementById('stuffTabBtn').classList.add('active');
-                document.getElementById('event-tiles').style.display = 'none';
-                document.getElementById('favorite-list').style.display = 'none';
-                document.getElementById('stuffLink').style.display = 'block';
+    displaySuggestions();
+    getData();
+</script>
 
-            }
-        }
-    </script>
 </body>
 </html>
