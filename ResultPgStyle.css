@@ -1,82 +1,75 @@
-﻿/* Reset some default styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
+﻿.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
   background: transparent;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header {
-  background: transparent;
-  color: #cac7ff;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .header h1 {
-  font-size: 32px;
+    color: #333;
+    font-size: 24px;
 }
 
 .blue-text {
-  color: #007bff;
+    color: #007bff; /* Adjust the color to match your design */
 }
 
-.resultspage-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  grid-gap: 20px;
-}
-
-.favorite-list,
-.results-container,
-.suggestions-container,
-.events-container {
-  background-color: transparent;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.events-container, .suggestions-container {
+    margin-top: 20px;
 }
 
 .event {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .event-image {
-  width: 150px;
-  height: 100px;
-  object-fit: cover;
-  margin-right: 20px;
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 20px;
+    border-radius: 10px; /* Optional: for rounded corners */
+}
+
+.event-info {
+    flex-grow: 1;
 }
 
 .event-title {
-  font-size: 18px;
-  margin-bottom: 5px;
+    font-size: 18px;
+    margin: 0;
+    color: #000;
 }
 
-.event-date,
-.event-location {
-  color: #666;
-  margin-bottom: 5px;
+.event-date, .event-location {
+    font-size: 14px;
+    color: #666;
 }
 
 .event-link {
-  color: #007bff;
-  text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff; /* Or any color that matches your design */
+    text-decoration: none; /* Optional: removes underline from links */
 }
 
 .event-link:hover {
-  text-decoration: underline;
+    text-decoration: underline; /* Optional: adds underline on hover */
+}
+
+.favorite-list, .suggestions-container {
+    padding: 15px;
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+}
+
+#favorites li, .suggestions-container li {
+    list-style-type: none; /* Removes bullet points */
+    padding: 5px 0;
+}
+
+.add-to-favorites img {
+    width: 24px;
+    height: auto;
+    cursor: pointer; /* Changes cursor to pointer on hover */
 }

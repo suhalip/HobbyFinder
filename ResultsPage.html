@@ -16,14 +16,12 @@
             <h3>Favorites</h3>
             <ul id="favorites"></ul>
         </div>
-        <!-- Added title for the events section -->
         <div id="events" class="events-container">
-            <h2>Events</h2> <!-- Title for the events section -->
+            <h2>Events</h2>
             <div id="results" class="results-container"></div>
         </div>
-        <!-- Added title for the suggestions section -->
         <div id="suggestions" class="suggestions-container">
-            <h2>Suggestions</h2> <!-- Title for the suggestions section -->
+            <h2>Suggestions</h2>
         </div>
     </div>
 </div>
@@ -49,6 +47,7 @@
                     <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
                     <p class="event-location">Location: ${event.location}</p>
                     <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
+                     <button class="add-to-favorites" onclick="addToFavorites(this)">Add to Favorites</button>
                 </div>
             `;
             eventsContainer.appendChild(eventElement);
@@ -69,7 +68,7 @@
         }
 
         const suggestionsContainer = document.getElementById('suggestions');
-        suggestionsContainer.innerHTML = ''; // Clear before appending new items
+        suggestionsContainer.innerHTML = '';
 
         const fragment = document.createDocumentFragment();
         data.suggestions.forEach(suggestion => {
@@ -81,8 +80,43 @@
         suggestionsContainer.appendChild(fragment);
     }
 
-    displaySuggestions();
-    getData();
+    function loadFavorites() {
+        const favorites = JSON.parse(sessionStorage.getItem('favorites'));
+        if (favorites) {
+            favorites.forEach(favorite => {
+                const listItem = document.createElement('li');
+                listItem.textContent = favorite;
+                document.getElementById('favorites').appendChild(listItem);
+            });
+        }
+    }
+
+    function addToFavorites(button) {
+        const fullText = button.parentNode.textContent.replace('Add to Favorites', '').trim();
+        const titleMatch = fullText.match(/^\d+\.\s+(.*?)(?:\s+[-:]|$)/);
+
+        if (titleMatch && titleMatch[1]) {
+            const listItem = document.createElement('li');
+            listItem.textContent = titleMatch[1].trim();
+            document.getElementById('favorites').appendChild(listItem);
+
+            button.disabled = true;
+            saveFavorites();
+        }
+    }
+
+    function saveFavorites() {
+        const favoriteItems = document.querySelectorAll('#favorites li');
+        const favorites = [];
+        favoriteItems.forEach(item => favorites.push(item.textContent));
+        sessionStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadFavorites();
+        displaySuggestions();
+        getData();
+    });
 </script>
 
 </body>
