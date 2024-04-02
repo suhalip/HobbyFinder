@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
 }
 
 .container {
@@ -27,6 +28,7 @@
 .blue-text {
     color: #007bff; /* Adjust the color to match your design */
 }
+
 .favorite-list {
     width: 400px;
     background-color: transparent;
@@ -34,7 +36,6 @@
     overflow-y: auto;
     color: #cac7ff;
 }
-
 
 #favorites li{
     list-style-type: none; /* Removes bullet points */
@@ -57,6 +58,8 @@
 }
 
 .event {
+    display: flex; /* or inline-flex as needed */
+    flex-direction: column;
     border: 1px solid #ddd; /* Add a border for each event tile */
     padding: 10px; /* Add padding around each event tile */
     margin-bottom: 20px; /* Add margin between each event tile */
@@ -96,25 +99,6 @@
 
 .event-link:hover {
     text-decoration: underline; /* Optional: adds underline on hover */
-}
-
-.tab {
-  margin-bottom: 20px;
-}
-
-.tab button {
-  background-color: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin-right: 10px;
-    border-bottom: 2px solid transparent;
-}
-
-.tab button.active {
-   border-bottom: 2px solid #286bc7;
 }
 
 .tile {
@@ -203,25 +187,54 @@
 
 .add-to-favorites {
     position: absolute;
-    bottom: 10px; /* Adjust as necessary */
-    right: 10px; /* Adjust as necessary */
+    bottom: 10px;
+    right: 10px;
     font-family: 'Arial', sans-serif;
     background-color: transparent;
     color: white;
     padding: 10px 20px;
-    border: 1px solid white;
-    border-radius: 5px;
+    border: none;
+    border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }
 
-    .add-to-favorites:hover {
-        background-color: #EA3C53;
-        border: none;
-    }
+.add-to-favorites:before {
+    content: "♥";
+    display: block;
+    transform: scale(1);
+}
 
-    .add-to-favorites:disabled {
-        background-color: #EA3C53; /* Grayed out when disabled */
-        cursor: default;
-        border: none;
-    }
+.add-to-favorites:hover {
+    background-color: #EA3C53;
+}
+
+.add-to-favorites:disabled {
+    background-color: #EA3C53;
+    cursor: default;
+}
+
+.tab {
+  margin-bottom: 20px;
+}
+
+.tab button {
+  background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-right: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab button.active {
+   border-bottom: 2px solid #286bc7;
+}

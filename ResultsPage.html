@@ -19,7 +19,7 @@
     </header>
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
-            <h3>Favorites</h3>
+            <h3>Liked</h3>
             <ul id="favorites"></ul>
         </div>
         <div id="EventsTab" class="tabcontent">
@@ -58,7 +58,7 @@
                     <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
                     <p class="event-location">Location: ${event.location}</p>
                     <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
-                     <button class="add-to-favorites" onclick="addToFavorites(this)">Like</button>
+                     <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
                 </div>
             `;
             eventsContainer.appendChild(eventElement);
@@ -87,7 +87,7 @@
 
         tile.innerHTML = `
             <p>${suggestion.trim()}</p>
-            <button class="add-to-favorites" onclick="addToFavorites(this)">Like</button>
+            <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
         `;
         suggestionsContainer.appendChild(tile);
     });
