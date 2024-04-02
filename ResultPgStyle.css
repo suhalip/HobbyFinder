@@ -1,27 +1,68 @@
-﻿.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-  background: transparent;
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-.header h1 {
-    color: #333;
-    font-size: 24px;
+.container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 5%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(images/background.png);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Make the container position relative */
+}
+.header {
+    text-align: center;
+    color: #cac7ff;
+    margin-bottom: 30px;
 }
 
 .blue-text {
     color: #007bff; /* Adjust the color to match your design */
 }
+.favorite-list {
+    width: 400px;
+    background-color: transparent;
+    padding: 20px;
+    overflow-y: auto;
+    color: #cac7ff;
+}
 
-.events-container, .suggestions-container {
-    margin-top: 20px;
+
+#favorites li{
+    list-style-type: none; /* Removes bullet points */
+    padding: 5px 0;
+}
+
+.tile, .result-item {
+    position: relative;
+
+}
+
+.events-container{
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #cac7ff; /* Text color */
+    flew-grow: 1;
+    overflow-y: auto;
 }
 
 .event {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    border: 1px solid #ddd; /* Add a border for each event tile */
+    padding: 10px; /* Add padding around each event tile */
+    margin-bottom: 20px; /* Add margin between each event tile */
+    position: relative; /* Set position to relative for absolute positioning of button */
+    background-color: rgba(50, 50, 50, 0.8); /* Dark grey transparent background */
+    color: #cac7ff; /* Text color */
 }
 
 .event-image {
@@ -38,12 +79,12 @@
 .event-title {
     font-size: 18px;
     margin: 0;
-    color: #000;
+    color: black;
 }
 
 .event-date, .event-location {
     font-size: 14px;
-    color: #666;
+    color: #cac7ff;
 }
 
 .event-link {
@@ -57,19 +98,130 @@
     text-decoration: underline; /* Optional: adds underline on hover */
 }
 
-.favorite-list, .suggestions-container {
-    padding: 15px;
-    border: 1px solid #ddd; /* Light grey border */
-    border-radius: 5px; /* Rounded corners */
+.tab {
+  margin-bottom: 20px;
 }
 
-#favorites li, .suggestions-container li {
-    list-style-type: none; /* Removes bullet points */
-    padding: 5px 0;
+.tab button {
+  background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-right: 10px;
+    border-bottom: 2px solid transparent;
 }
 
-.add-to-favorites img {
-    width: 24px;
-    height: auto;
-    cursor: pointer; /* Changes cursor to pointer on hover */
+.tab button.active {
+   border-bottom: 2px solid #286bc7;
 }
+
+.tile {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    width: 250px; /* Fixed width */
+    height: 300px; /* Fixed height */
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
+    background-color: transparent;
+    border-radius: 5px; /* Optional: for rounded corners */
+    overflow: hidden; /* Prevents content from overflowing */
+}
+
+.tile:hover {
+    box-shadow: 0 60px 16px 0 rgba(0,0,0,0.2);
+}
+
+.tile img {
+    width: 100%;
+    border-radius: 5px 5px 0 0; /* Optional: if you want the top corners rounded */
+    height: 120px; /* Fixed height for images */
+    object-fit: cover; /* Ensures the image covers the area, might crop */
+}
+
+.tile-container {
+    padding: 2px 16px;
+    overflow: auto; /* Adds scrollbars to content if it overflows */
+    height: calc(100% - 120px); /* Adjust height based on the image height */
+}
+
+.tile-title {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.tile-content {
+    font-size: 16px;
+}
+
+
+.result-item {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #cac7ff; /* Text color */
+    flew-grow: 1;
+    overflow-y: auto;
+}
+
+    .result-item h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+
+    }
+
+    .result-item p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .result-item cite {
+        font-style: italic;
+        color: #999999;
+    }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .favorite-list {
+        width: 100%;
+        height: auto;
+    }
+    .results-item {
+        padding: 20px 10px;
+    }
+}
+
+.resultspage-container {
+    color: #cac7ff;
+    display: flex;
+}
+
+.add-to-favorites {
+    position: absolute;
+    bottom: 10px; /* Adjust as necessary */
+    right: 10px; /* Adjust as necessary */
+    font-family: 'Arial', sans-serif;
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    .add-to-favorites:hover {
+        background-color: #EA3C53;
+        border: none;
+    }
+
+    .add-to-favorites:disabled {
+        background-color: #EA3C53; /* Grayed out when disabled */
+        cursor: default;
+        border: none;
+    }

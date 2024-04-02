@@ -2,27 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
+    <link rel="stylesheet" href="background.js">
 </head>
 <body>
 <div class="container">
     <header class="header">
         <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
+        <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Events')">Events</button>
+    <button class="tablinks" onclick="openTab(event, 'Suggestions')">Suggestions</button>
+</div>
     </header>
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
             <h3>Favorites</h3>
             <ul id="favorites"></ul>
         </div>
-        <div id="events" class="events-container">
-            <h2>Events</h2>
-            <div id="results" class="results-container"></div>
-        </div>
-        <div id="suggestions" class="suggestions-container">
-            <h2>Suggestions</h2>
-        </div>
+        <div id="EventsTab" class="tabcontent">
+    <div id="events" class="events-container">
+        <h2>Events</h2>
+        <div id="results" class="results-container"></div>
+    </div>
+</div>
+
+<div id="SuggestionsTab" class="tabcontent">
+    <div id="suggestions" class="results-container">
+        <h2>Suggestions</h2>
+    </div>
+</div>
     </div>
 </div>
 
@@ -39,7 +50,7 @@
         const eventsContainer = document.getElementById('results');
         data.events.forEach(event => {
             const eventElement = document.createElement('div');
-            eventElement.classList.add('event');
+            eventElement.classList.add('tile');
             eventElement.innerHTML = `
                 <img src="${event.imageUrl}" alt="Event image" class="event-image">
                 <div class="event-info">
@@ -47,7 +58,7 @@
                     <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
                     <p class="event-location">Location: ${event.location}</p>
                     <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
-                     <button class="add-to-favorites" onclick="addToFavorites(this)">Add to Favorites</button>
+                     <button class="add-to-favorites" onclick="addToFavorites(this)">Like</button>
                 </div>
             `;
             eventsContainer.appendChild(eventElement);
@@ -55,30 +66,32 @@
     }
 
     function displaySuggestions() {
-        const storedData = localStorage.getItem('formattedData');
-        if (!storedData) {
-            console.error('No data found in localStorage.');
-            return;
-        }
-
-        const data = JSON.parse(storedData);
-        if (!data.suggestions || data.suggestions.length === 0) {
-            console.log('No suggestions available.');
-            return;
-        }
-
-        const suggestionsContainer = document.getElementById('suggestions');
-        suggestionsContainer.innerHTML = '';
-
-        const fragment = document.createDocumentFragment();
-        data.suggestions.forEach(suggestion => {
-            const listItem = document.createElement('li');
-            listItem.textContent = suggestion;
-            fragment.appendChild(listItem);
-        });
-
-        suggestionsContainer.appendChild(fragment);
+    const storedData = localStorage.getItem('formattedData');
+    if (!storedData) {
+        console.error('No data found in localStorage.');
+        return;
     }
+
+    const data = JSON.parse(storedData);
+    if (!data.suggestions || data.suggestions.length === 0) {
+        console.log('No suggestions available.');
+        return;
+    }
+    const validSuggestions = data.suggestions.filter(suggestion => suggestion.trim() !== '');
+    const suggestionsContainer = document.getElementById('suggestions');
+    suggestionsContainer.innerHTML = '';
+
+    validSuggestions.forEach((suggestion, index) => {
+        const tile = document.createElement('div');
+        tile.classList.add('result-item');
+
+        tile.innerHTML = `
+            <p>${suggestion.trim()}</p>
+            <button class="add-to-favorites" onclick="addToFavorites(this)">Like</button>
+        `;
+        suggestionsContainer.appendChild(tile);
+    });
+}
 
     function loadFavorites() {
         const favorites = JSON.parse(sessionStorage.getItem('favorites'));
@@ -92,18 +105,32 @@
     }
 
     function addToFavorites(button) {
-        const fullText = button.parentNode.textContent.replace('Add to Favorites', '').trim();
-        const titleMatch = fullText.match(/^\d+\.\s+(.*?)(?:\s+[-:]|$)/);
+    let textContent;
 
-        if (titleMatch && titleMatch[1]) {
-            const listItem = document.createElement('li');
-            listItem.textContent = titleMatch[1].trim();
-            document.getElementById('favorites').appendChild(listItem);
+    const eventTitleElement = button.parentNode.querySelector('.event-title');
+    textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
 
-            button.disabled = true;
-            saveFavorites();
+    // Remove everything after and including the first "-" or ":"
+    textContent = textContent.replace(/\d+\.\s*(.*?)[\:\-]/, '$1').trim();
+
+    const favoritesList = document.getElementById('favorites');
+    let isDuplicate = false;
+    favoritesList.querySelectorAll('li').forEach((li) => {
+        if (li.textContent.trim() === textContent.trim()) {
+            isDuplicate = true;
         }
+    });
+    if (!isDuplicate) {
+        const listItem = document.createElement('li');
+        listItem.textContent = textContent;
+        favoritesList.appendChild(listItem);
+        saveFavorites(); // Save the updated favorites list
     }
+    button.disabled = true;
+    const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+    sessionStorage.setItem(eventTitle, 'disabled');
+}
+
 
     function saveFavorites() {
         const favoriteItems = document.querySelectorAll('#favorites li');
@@ -111,12 +138,42 @@
         favoriteItems.forEach(item => favorites.push(item.textContent));
         sessionStorage.setItem('favorites', JSON.stringify(favorites));
     }
-
     document.addEventListener('DOMContentLoaded', function() {
         loadFavorites();
-        displaySuggestions();
-        getData();
+        document.querySelector('.tablinks').click();
+
+        const buttons = document.querySelectorAll('.add-to-favorites');
+        buttons.forEach(button => {
+        const eventInfoElement = button.parentNode;
+        const eventTitleElement = eventInfoElement.querySelector('.event-title');
+        const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+
+        // Disable button if it was previously disabled in the session
+        if (sessionStorage.getItem(eventTitle) === 'disabled') {
+            button.disabled = true;
+        }
     });
+    });
+
+    function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName + "Tab").style.display = "block";
+    evt.currentTarget.className += " active";
+
+    if (tabName === 'Events') {
+        getData();
+    } else if (tabName === 'Suggestions') {
+        displaySuggestions();
+    }
+}
 </script>
 
 </body>
