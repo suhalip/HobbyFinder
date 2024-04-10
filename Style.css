@@ -81,69 +81,60 @@
     z-index: 2; /* Ensure button stays above other content */
 }
 
-.header h1 {
-    position: relative;
-    z-index: 2; /* Ensure header text stays above other content */
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.results-container {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.tile {
-    background-color: #e0e0e0;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-left: 5px solid #007bff;
-}
-
-/* Add responsiveness */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-    .favorite-list {
-        width: 100%;
-        height: auto;
-    }
-    .results-container {
-        padding: 20px 10px;
-    }
-}
-
-.resultspage-container {
-    display: flex;
-}
-
+/* Suggestions Dropdown Styles */
 #suggestions-dropdown {
-    position: absolute;
-    top: 225%;
-    width: calc(100% - 42px);
-    max-height: 300px;
-    overflow-y: auto;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-top: none;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 2;
-    display: none;
-    cursor: pointer;
+  position: absolute;
+  top: 225%;
+  width: calc(100% - 42px);
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white; /* Darker background color */
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow */
+  z-index: 2;
+  display: none;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .suggestion-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee; /* Separates items */
-    cursor: pointer; /* Indicates an interactive item */
-
+  padding: 12px 16px;
+  border-bottom: 1px solid #2c2f31; /* Darker border color */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 14px;
+  color: #cac7ff; /* Match the header text color */
 }
 
 .suggestion-item:last-child {
-    border-bottom: none; /* Removes bottom border for the last item */
+  border-bottom: none;
 }
 
 .suggestion-item:hover, .suggestion-item:focus {
-    background-color: #f8f8f8; /* Highlights item on hover/focus */
+  background-color: #249D9F; /* Darker hover color */
+  color: #fff; /* Lighter text color on hover */
+    transform: scale(1.02);
 }
 
+.loading-bar-container{
+    width: 100%;
+    background: #ccc;
+}
+
+.loading-bar{
+    width: 0%;
+    height: 5px;
+    background-color: #3498db;
+}

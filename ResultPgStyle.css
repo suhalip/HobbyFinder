@@ -48,6 +48,7 @@
 }
 
 .events-container{
+    width: 850px;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     padding: 20px;
@@ -208,7 +209,7 @@
 .add-to-favorites:before {
     content: "♥";
     display: block;
-    transform: scale(1);
+    transform: scale(1.2);
 }
 
 .add-to-favorites:hover {

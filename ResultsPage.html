@@ -23,47 +23,51 @@
             <ul id="favorites"></ul>
         </div>
         <div id="EventsTab" class="tabcontent">
-    <div id="events" class="events-container">
-        <h2>Events</h2>
-        <div id="results" class="results-container"></div>
-    </div>
-</div>
-
-<div id="SuggestionsTab" class="tabcontent">
-    <div id="suggestions" class="results-container">
-        <h2>Suggestions</h2>
-    </div>
-</div>
+            <div id="events" class="events-container">
+                <h2>Events</h2>
+                <div id="results" class="results-container"></div>
+            </div>
+        </div>
+        <div id="SuggestionsTab" class="tabcontent">
+            <div id="suggestions" class="results-container">
+                <h2>Suggestions</h2>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     async function getData() {
-        const storedData = localStorage.getItem('formattedData');
-        const data = JSON.parse(storedData);
+    const storedData = localStorage.getItem('formattedData');
+    const data = JSON.parse(storedData);
 
-        if (!data) {
-            console.error('No data found');
-            return;
-        }
-
-        const eventsContainer = document.getElementById('results');
-        data.events.forEach(event => {
-            const eventElement = document.createElement('div');
-            eventElement.classList.add('tile');
-            eventElement.innerHTML = `
-                <img src="${event.imageUrl}" alt="Event image" class="event-image">
-                <div class="event-info">
-                    <h3 class="event-title">${event.name}</h3>
-                    <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
-                    <p class="event-location">Location: ${event.location}</p>
-                    <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
-                     <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
-                </div>
-            `;
-            eventsContainer.appendChild(eventElement);
-        });
+    if (!data) {
+        console.error('No data found');
+        return;
     }
+
+    const eventsContainer = document.getElementById('results');
+    eventsContainer.innerHTML = ''; // Clear the events container before adding new ones
+
+    data.events.forEach(event => {
+        const eventElement = document.createElement('div');
+        eventElement.classList.add('tile');
+        eventElement.innerHTML = `
+            <img src="${event.imageUrl}" alt="Event image" class="event-image">
+            <div class="event-info">
+                <h3 class="event-title">${event.name}</h3>
+                <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
+                <p class="event-location">Location: ${event.location}</p>
+                <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
+                <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
+            </div>
+        `;
+        eventsContainer.appendChild(eventElement);
+    });
+
+    updateFavoriteButtons();
+}
+
 
     function displaySuggestions() {
     const storedData = localStorage.getItem('formattedData');
@@ -91,20 +95,27 @@
         `;
         suggestionsContainer.appendChild(tile);
     });
+        updateFavoriteButtons();
 }
 
-    function loadFavorites() {
-        const favorites = JSON.parse(sessionStorage.getItem('favorites'));
-        if (favorites) {
-            favorites.forEach(favorite => {
-                const listItem = document.createElement('li');
-                listItem.textContent = favorite;
-                document.getElementById('favorites').appendChild(listItem);
-            });
-        }
+    function saveFavorites() {
+        const favoriteItems = document.querySelectorAll('#favorites li');
+        const favorites = [];
+        favoriteItems.forEach(item => favorites.push(item.textContent));
+        sessionStorage.setItem('favorites', JSON.stringify(favorites));
     }
 
-    function addToFavorites(button) {
+function loadFavorites() {
+    const favorites = JSON.parse(sessionStorage.getItem('favorites'));
+    if (favorites) {
+        favorites.forEach(favorite => {
+            const listItem = document.createElement('li');
+            listItem.textContent = favorite;
+            document.getElementById('favorites').appendChild(listItem);
+        });
+    }
+}
+function addToFavorites(button) {
     let textContent;
 
     const eventTitleElement = button.parentNode.querySelector('.event-title');
@@ -127,23 +138,12 @@
         saveFavorites(); // Save the updated favorites list
     }
     button.disabled = true;
-    const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
-    sessionStorage.setItem(eventTitle, 'disabled');
+    sessionStorage.setItem(textContent, 'disabled');
 }
 
-
-    function saveFavorites() {
-        const favoriteItems = document.querySelectorAll('#favorites li');
-        const favorites = [];
-        favoriteItems.forEach(item => favorites.push(item.textContent));
-        sessionStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        loadFavorites();
-        document.querySelector('.tablinks').click();
-
-        const buttons = document.querySelectorAll('.add-to-favorites');
-        buttons.forEach(button => {
+function updateFavoriteButtons() {
+    const buttons = document.querySelectorAll('.add-to-favorites');
+    buttons.forEach(button => {
         const eventInfoElement = button.parentNode;
         const eventTitleElement = eventInfoElement.querySelector('.event-title');
         const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
@@ -151,11 +151,13 @@
         // Disable button if it was previously disabled in the session
         if (sessionStorage.getItem(eventTitle) === 'disabled') {
             button.disabled = true;
+        } else {
+            button.disabled = false;
         }
     });
-    });
+}
 
-    function openTab(evt, tabName) {
+function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -174,6 +176,26 @@
         displaySuggestions();
     }
 }
+
+   document.addEventListener('DOMContentLoaded', function() {
+        loadFavorites();
+        document.querySelector('.tablinks').click();
+
+        const buttons = document.querySelectorAll('.add-to-favorites');
+        buttons.forEach(button => {
+        const eventInfoElement = button.parentNode;
+        const eventTitleElement = eventInfoElement.querySelector('.event-title');
+        const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+
+        // Disable button if it was previously disabled in the session
+        if (sessionStorage.getItem(eventTitle) === 'disabled') {
+            button.disabled = true;
+        }
+    });
+    });
+
+
+
 </script>
 
 </body>
