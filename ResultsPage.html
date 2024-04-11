@@ -47,7 +47,7 @@
     }
 
     const eventsContainer = document.getElementById('results');
-    eventsContainer.innerHTML = ''; // Clear the events container before adding new ones
+    eventsContainer.innerHTML = '';
 
     data.events.forEach(event => {
         const eventElement = document.createElement('div');
@@ -122,7 +122,7 @@ function addToFavorites(button) {
     textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
 
     // Remove everything after and including the first "-" or ":"
-    textContent = textContent.replace(/\d+\.\s*(.*?)[\:\-]/, '$1').trim();
+    textContent = textContent.replace(/^\d+\.\s*([A-Za-z\s]+):.*$/, '$1').trim();
 
     const favoritesList = document.getElementById('favorites');
     let isDuplicate = false;
@@ -175,6 +175,7 @@ function openTab(evt, tabName) {
     } else if (tabName === 'Suggestions') {
         displaySuggestions();
     }
+    updateFavoriteButtons();
 }
 
    document.addEventListener('DOMContentLoaded', function() {
@@ -192,7 +193,7 @@ function openTab(evt, tabName) {
             button.disabled = true;
         }
     });
-    });
+   });
 
 
 

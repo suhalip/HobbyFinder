@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
     <link rel="stylesheet" href="style.css">
     <script src="autocomplete.js"></script>
+    <script src="background.js"></script>
     <style>
     </style>
 </head>
@@ -28,16 +29,14 @@
             <input form="search_form" type="text" id="my-location-input" placeholder="Location" name="l" />
             <input form="search_form" type="date" placeholder="MM/DD/YY" name="date" />
         </form>
-        <div id="loading-bar-container" style="width: 100%; background: #ccc;">
-    <div id="loading-bar" style="width: 0%; height: 5px; background-color: #3498db;"></div>
+        <div id="loading-bar-container">
+    <div id="loading-bar"></div>
 </div>
     </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search_form');
     const suggestionsDropdown = document.getElementById('suggestions-dropdown');
-    const loadingBarContainer = document.getElementById('loading-bar-container');
-    const loadingBar = document.getElementById('loading-bar');
 
     searchForm.addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission
@@ -73,7 +72,7 @@ function fetchDataAndRedirect(query, location, date) {
             setTimeout(() => { // Give a slight delay for visual completion
                 localStorage.setItem('formattedData', JSON.stringify(data));
                 window.location.href = 'ResultsPage.html'; // Redirect to the results page
-            }, 10); // Redirect after a 1-second delay
+            }, 1); // Redirect after a 1-second delay
         })
         .catch(error => {
             console.error('Error:', error);

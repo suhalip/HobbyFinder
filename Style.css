@@ -15,7 +15,7 @@
     z-index: 2; /* Ensure header stays above other content */
 }
 
-.container {
+.container{
     width: 100%;
     min-height: 100vh;
     padding: 5%;
@@ -123,18 +123,28 @@
 }
 
 .suggestion-item:hover, .suggestion-item:focus {
-  background-color: #249D9F; /* Darker hover color */
   color: #fff; /* Lighter text color on hover */
     transform: scale(1.02);
 }
 
-.loading-bar-container{
-    width: 100%;
-    background: #ccc;
+#loading-bar-container {
+  width: 50%;
+  background-color: transparent;
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
 }
 
-.loading-bar{
-    width: 0%;
-    height: 5px;
-    background-color: #3498db;
+#loading-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #cac7ff;
+  background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 50%, #fff 50%, #fff 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+  animation: loading-bar-animation 2s linear infinite;
+}
+
+@keyframes loading-bar-animation {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
 }
