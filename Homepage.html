@@ -30,57 +30,80 @@
             <input form="search_form" type="date" placeholder="MM/DD/YY" name="date" />
         </form>
         <div id="loading-bar-container">
-    <div id="loading-bar"></div>
-</div>
+            <div id="loading-bar"></div>
+            </div>
+        </div>
+        <div id="mascot" class="mascot-style">
+    <img src="images/mascot.png" alt="Friendly Mascot" />
+        </div>
+    <div id="location-mascot" class="mascot-style" style="display:none;">
+        <img src="images/Plane.png" alt="Location Mascot" />
+    </div>
     </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchForm = document.getElementById('search_form');
-    const suggestionsDropdown = document.getElementById('suggestions-dropdown');
-
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission
-
-        // Fetch user inputs from the form
-        const query = document.querySelector('input[name="q"]').value;
-        const location = document.querySelector('input[name="l"]').value;
-        const date = document.querySelector('input[name="date"]').value;
-
-        suggestionsDropdown.style.display = 'none';
-        showLoadingBar();
-        fetchDataAndRedirect(query, location, date);
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.getElementById('search_form');
+        const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+        const mascot = document.getElementById('mascot'); // Get the mascot element
+        const locationInput = document.getElementById('my-location-input'); // Get the location input element
+        const locationMascot = document.getElementById('location-mascot');
+        searchForm.querySelector('input[name="q"]').addEventListener('focusin', function() {
+            mascot.style.bottom = '20px'; // Adjust as needed
+            mascot.style.animation = 'bounce 1s infinite';
+        });
+        searchForm.querySelector('input[name="q"]').addEventListener('focusout', function() {
+            mascot.style.bottom = '-120px';
+            mascot.style.animation = 'none';
+        });
+        locationInput.addEventListener('focusin', function() {
+        locationMascot.style.display = 'block'; // Show the location mascot
+        locationMascot.style.bottom = '10px'; // Slightly raise the mascot from the bottom
+        locationMascot.style.animation = 'bounce 1s infinite';
+        });
+        locationInput.addEventListener('focusout', function() {
+        locationMascot.style.display = 'none'; // Hide the location mascot
+        locationMascot.style.bottom = '-150px'; // Change this value to match the height of your image
+        locationMascot.style.animation = 'none';
     });
-});
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = document.querySelector('input[name="q"]').value;
+            const location = document.querySelector('input[name="l"]').value;
+            const date = document.querySelector('input[name="date"]').value;
+            suggestionsDropdown.style.display = 'none';
+            showLoadingBar();
+            fetchDataAndRedirect(query, location, date);
+        });
+    });
+    function showLoadingBar() {
+        const loadingBarContainer = document.getElementById('loading-bar-container');
+        const loadingBar = document.getElementById('loading-bar');
 
-function showLoadingBar() {
-    const loadingBarContainer = document.getElementById('loading-bar-container');
-    const loadingBar = document.getElementById('loading-bar');
+        loadingBarContainer.style.display = 'block'; // Ensure the container is visible
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 2; // Increase progress
+            loadingBar.style.width = `${progress}%`; // Update loading bar width
+            if (progress >= 100) clearInterval(interval);
+        }, 100);
+    }
 
-    loadingBarContainer.style.display = 'block'; // Ensure the container is visible
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += 2; // Increase progress
-        loadingBar.style.width = `${progress}%`; // Update loading bar width
-        if (progress >= 100) clearInterval(interval);
-    }, 100);
-}
-
-function fetchDataAndRedirect(query, location, date) {
-    fetch(`/search-hobbies?q=${encodeURIComponent(query)}&l=${encodeURIComponent(location)}&date=${encodeURIComponent(date)}`)
-        .then(response => response.json())
-        .then(data => {
-            setTimeout(() => { // Give a slight delay for visual completion
-                localStorage.setItem('formattedData', JSON.stringify(data));
-                window.location.href = 'ResultsPage.html'; // Redirect to the results page
-            }, 1); // Redirect after a 1-second delay
-        })
+    function fetchDataAndRedirect(query, location, date) {
+        fetch(`/search-hobbies?q=${encodeURIComponent(query)}&l=${encodeURIComponent(location)}&date=${encodeURIComponent(date)}`)
+            .then(response => response.json())
+            .then(data => {
+                setTimeout(() => { // Give a slight delay for visual completion
+                    localStorage.setItem('formattedData', JSON.stringify(data));
+                    window.location.href = 'ResultsPage.html'; // Redirect to the results page
+                }, 5); // Redirect after a 1-second delay
+            })
         .catch(error => {
             console.error('Error:', error);
             const loadingBarContainer = document.getElementById('loading-bar-container');
             loadingBarContainer.style.display = 'none'; // Hide the loading bar container
-        });
-}
+            }
+        );
+    }
 </script>
-
 </body>
 </html>

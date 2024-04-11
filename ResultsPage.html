@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
-    <link rel="stylesheet" href="background.js">
+    <script src="background.js"></script>
 </head>
 <body>
 <div class="container">
@@ -121,7 +121,6 @@ function addToFavorites(button) {
     const eventTitleElement = button.parentNode.querySelector('.event-title');
     textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
 
-    // Remove everything after and including the first "-" or ":"
     textContent = textContent.replace(/^\d+\.\s*([A-Za-z\s]+):.*$/, '$1').trim();
 
     const favoritesList = document.getElementById('favorites');
@@ -148,7 +147,6 @@ function updateFavoriteButtons() {
         const eventTitleElement = eventInfoElement.querySelector('.event-title');
         const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
 
-        // Disable button if it was previously disabled in the session
         if (sessionStorage.getItem(eventTitle) === 'disabled') {
             button.disabled = true;
         } else {
