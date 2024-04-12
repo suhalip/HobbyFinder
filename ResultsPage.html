@@ -2,107 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
     <script src="background.js"></script>
-    <link rel="import" href="Homepage.html">
 </head>
 <body>
 <div class="container">
     <header class="header">
-        <h1>Events & Things to do in<span class="blue-text"> United States</span></h1>
+        <h1>Events & Things to do in<span class="blue-text"> New Hampshire</span></h1>
+        <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Events')">Events</button>
+    <button class="tablinks" onclick="openTab(event, 'Suggestions')">Suggestions</button>
+</div>
     </header>
     <div class="resultspage-container">
         <div id="favorite-list" class="favorite-list">
-            <h3>Favorites</h3>
+            <h3>Liked</h3>
             <ul id="favorites"></ul>
         </div>
-        <div class="event-tiles" id="event-tiles"></div>
+        <div id="EventsTab" class="tabcontent">
+            <div id="events" class="events-container">
+                <h2>Events</h2>
+                <div id="results" class="results-container"></div>
+            </div>
+        </div>
+        <div id="SuggestionsTab" class="tabcontent">
+            <div id="suggestions" class="results-container">
+                <h2>Suggestions</h2>
+            </div>
+        </div>
     </div>
 </div>
+
 <script>
-    const apiKey = 'API_KEY';
+    async function getData() {
+    const storedData = localStorage.getItem('formattedData');
+    const data = JSON.parse(storedData);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const params = new URLSearchParams(window.location.search);
-        const location = params.get('l'); // Get the location parameter
-        const query = params.get('q'); // Get the query parameter
-        const date = params.get('date'); // Get the date parameter
+    if (!data) {
+        console.error('No data found');
+        return;
+    }
 
-        // Select the element where the location should be displayed
-        const locationElement = document.querySelector('.blue-text');
+    const eventsContainer = document.getElementById('results');
+    eventsContainer.innerHTML = '';
 
-        if (location) {
-            // Update the text content with the user-provided location
-            locationElement.textContent = ` ${location}`;
-        } else {
-            // Provide a default text in case no location is specified
-            locationElement.textContent = " United States";
-        }
-
-        // Construct the URL for the Ticketmaster API with the search parameters
-        let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&keyword=${query}`;
-        if (location) {
-            url += `&city=${location}`;
-        }
-        if (date) {
-            const isoDate = new Date(date).toISOString().split('T')[0];
-            url += `&startDateTime=${isoDate}T00:00:00Z`;
-        }
-
-        // Fetch events from Ticketmaster API
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const events = data['_embedded']['events'];
-                events.sort((a, b) => new Date(a.dates.start.localDate) - new Date(b.dates.start.localDate)); // Sort events by date
-                const eventTiles = events.map(event => {
-                    const eventName = event['name'];
-                    const eventDate = event['dates']['start']['localDate'];
-                    const eventTime = event['dates']['start'].hasOwnProperty('localTime') ? event['dates']['start']['localTime'] : 'Time not specified';
-                    const eventLocation = event['_embedded']['venues'][0]['name'];
-                    const eventCity = event['_embedded']['venues'][0]['city']['name'];
-                    const eventState = event['_embedded']['venues'][0]['state']['name'];
-                    const eventImages = event['images'];
-                    const eventImageURL = eventImages.length > 0 ? eventImages[0]['url'] : 'No image available';
-                    const eventUrl = event.url; // Get the URL for the event
-
-                    return `
-                        <div class="event-tile">
-                            <strong>${eventName}</strong><br>
-                            Date: ${eventDate}<br>
-                            Time: ${eventTime}<br>
-                            Location: ${eventLocation}, ${eventCity}, ${eventState}<br>
-                            <img src="${eventImageURL}" alt="Event Image"><br>
-                            <a href="${eventUrl}" target="_blank">Event Details</a><br><br> <!-- Link to event details -->
-                            <button class="add-to-favorites" onclick="addToFavorites(this)">Add to Favorites</button>
-                        </div>
-                    `;
-                }).join('');
-
-                // Display event tiles on the page
-                document.getElementById('event-tiles').innerHTML = eventTiles;
-            })
-            .catch(error => {
-                console.error('Error fetching events:', error);
-                document.getElementById('event-tiles').textContent = 'Failed to fetch events. Please try again later.';
-            });
+    data.events.forEach(event => {
+        const eventElement = document.createElement('div');
+        eventElement.classList.add('tile');
+        eventElement.innerHTML = `
+            <img src="${event.imageUrl}" alt="Event image" class="event-image">
+            <div class="event-info">
+                <h3 class="event-title">${event.name}</h3>
+                <p class="event-date">Date: ${event.date} | Time: ${event.time}</p>
+                <p class="event-location">Location: ${event.location}</p>
+                <a href="${event.url}" class="event-link" target="_blank">Event Details</a>
+                <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
+            </div>
+        `;
+        eventsContainer.appendChild(eventElement);
     });
 
-    function addToFavorites(button) {
-        const eventTile = button.closest('.event-tile');
-        const eventName = eventTile.querySelector('strong').textContent; // Use <strong> for the event name
-        // Create a new list item for the favorite
-        const listItem = document.createElement('li');
-        listItem.textContent = eventName;
-        document.getElementById('favorites').appendChild(listItem);
+    updateFavoriteButtons();
+}
 
-        // Disable the button after adding to favorites
-        button.disabled = true;
+
+    function displaySuggestions() {
+    const storedData = localStorage.getItem('formattedData');
+    if (!storedData) {
+        console.error('No data found in localStorage.');
+        return;
     }
+
+    const data = JSON.parse(storedData);
+    if (!data.suggestions || data.suggestions.length === 0) {
+        console.log('No suggestions available.');
+        return;
+    }
+    const validSuggestions = data.suggestions.filter(suggestion => suggestion.trim() !== '');
+    const suggestionsContainer = document.getElementById('suggestions');
+    suggestionsContainer.innerHTML = '';
+
+    validSuggestions.forEach((suggestion, index) => {
+        const tile = document.createElement('div');
+        tile.classList.add('result-item');
+
+        tile.innerHTML = `
+            <p>${suggestion.trim()}</p>
+            <button class="add-to-favorites" onclick="addToFavorites(this)"></button>
+        `;
+        suggestionsContainer.appendChild(tile);
+    });
+        updateFavoriteButtons();
+}
+
+    function saveFavorites() {
+        const favoriteItems = document.querySelectorAll('#favorites li');
+        const favorites = [];
+        favoriteItems.forEach(item => favorites.push(item.textContent));
+        sessionStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+function loadFavorites() {
+    const favorites = JSON.parse(sessionStorage.getItem('favorites'));
+    if (favorites) {
+        favorites.forEach(favorite => {
+            const listItem = document.createElement('li');
+            listItem.textContent = favorite;
+            document.getElementById('favorites').appendChild(listItem);
+        });
+    }
+}
+function addToFavorites(button) {
+    let textContent;
+
+    const eventTitleElement = button.parentNode.querySelector('.event-title');
+    textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
+
+    textContent = textContent.replace(/^\d+\.\s*([A-Za-z\s]+):.*$/, '$1').trim();
+
+    const favoritesList = document.getElementById('favorites');
+    let isDuplicate = false;
+    favoritesList.querySelectorAll('li').forEach((li) => {
+        if (li.textContent.trim() === textContent.trim()) {
+            isDuplicate = true;
+        }
+    });
+    if (!isDuplicate) {
+        const listItem = document.createElement('li');
+        listItem.textContent = textContent;
+        favoritesList.appendChild(listItem);
+        saveFavorites(); // Save the updated favorites list
+    }
+    button.disabled = true;
+    sessionStorage.setItem(textContent, 'disabled');
+}
+
+function updateFavoriteButtons() {
+    const buttons = document.querySelectorAll('.add-to-favorites');
+    buttons.forEach(button => {
+        const eventInfoElement = button.parentNode;
+        const eventTitleElement = eventInfoElement.querySelector('.event-title');
+        const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+
+        if (sessionStorage.getItem(eventTitle) === 'disabled') {
+            button.disabled = true;
+        } else {
+            button.disabled = false;
+        }
+    });
+}
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName + "Tab").style.display = "block";
+    evt.currentTarget.className += " active";
+
+    if (tabName === 'Events') {
+        getData();
+    } else if (tabName === 'Suggestions') {
+        displaySuggestions();
+    }
+    updateFavoriteButtons();
+}
+
+   document.addEventListener('DOMContentLoaded', function() {
+        loadFavorites();
+        document.querySelector('.tablinks').click();
+
+        const buttons = document.querySelectorAll('.add-to-favorites');
+        buttons.forEach(button => {
+        const eventInfoElement = button.parentNode;
+        const eventTitleElement = eventInfoElement.querySelector('.event-title');
+        const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+
+        // Disable button if it was previously disabled in the session
+        if (sessionStorage.getItem(eventTitle) === 'disabled') {
+            button.disabled = true;
+        }
+    });
+   });
+
+
+
 </script>
+
 </body>
 </html>
-
-

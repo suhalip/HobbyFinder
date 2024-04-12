@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
 }
 
 .container {
@@ -24,52 +25,8 @@
     margin-bottom: 30px;
 }
 
-    .header h1 {
-        font-family: 'Montserrat', sans-serif;
-    }
-
 .blue-text {
-    color: #286bc7;
-}
-
-.search-bar {
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 30px;
-    display: flex;
-}
-
-    .search-bar input {
-        flex: 1;
-        background: transparent; /* Remove background */
-        border: none;
-        border-bottom: 2px solid #286bc7;
-        padding: 10px;
-        font-size: 16px;
-        color: #cac7ff;
-        outline: none;
-    }
-
-    .search-bar button {
-        width: 60px;
-        height: 36px;
-        background: #286bc7;
-        border: none;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-        .search-bar button img {
-            width: 20px;
-            height: 20px;
-        }
-
-
-.search-results {
-    width: 100%;
+    color: #007bff; /* Adjust the color to match your design */
 }
 
 .favorite-list {
@@ -79,6 +36,111 @@
     overflow-y: auto;
     color: #cac7ff;
 }
+
+#favorites li{
+    list-style-type: none; /* Removes bullet points */
+    padding: 5px 0;
+}
+
+.tile, .result-item {
+    position: relative;
+
+}
+
+.events-container{
+    width: 850px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #cac7ff; /* Text color */
+    flew-grow: 1;
+    overflow-y: auto;
+}
+
+.event {
+    display: flex; /* or inline-flex as needed */
+    flex-direction: column;
+    border: 1px solid #ddd; /* Add a border for each event tile */
+    padding: 10px; /* Add padding around each event tile */
+    margin-bottom: 20px; /* Add margin between each event tile */
+    position: relative; /* Set position to relative for absolute positioning of button */
+    background-color: rgba(50, 50, 50, 0.8); /* Dark grey transparent background */
+    color: #cac7ff; /* Text color */
+}
+
+.event-image {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 20px;
+    border-radius: 10px; /* Optional: for rounded corners */
+}
+
+.event-info {
+    flex-grow: 1;
+}
+
+.event-title {
+    font-size: 18px;
+    margin: 0;
+    color: black;
+}
+
+.event-date, .event-location {
+    font-size: 14px;
+    color: #cac7ff;
+}
+
+.event-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff; /* Or any color that matches your design */
+    text-decoration: none; /* Optional: removes underline from links */
+}
+
+.event-link:hover {
+    text-decoration: underline; /* Optional: adds underline on hover */
+}
+
+.tile {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    width: 250px; /* Fixed width */
+    height: 300px; /* Fixed height */
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
+    background-color: transparent;
+    border-radius: 5px; /* Optional: for rounded corners */
+    overflow: hidden; /* Prevents content from overflowing */
+}
+
+.tile:hover {
+    box-shadow: 0 60px 16px 0 rgba(0,0,0,0.2);
+}
+
+.tile img {
+    width: 100%;
+    border-radius: 5px 5px 0 0; /* Optional: if you want the top corners rounded */
+    height: 120px; /* Fixed height for images */
+    object-fit: cover; /* Ensures the image covers the area, might crop */
+}
+
+.tile-container {
+    padding: 2px 16px;
+    overflow: auto; /* Adds scrollbars to content if it overflows */
+    height: calc(100% - 120px); /* Adjust height based on the image height */
+}
+
+.tile-title {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.tile-content {
+    font-size: 16px;
+}
+
 
 .result-item {
     background-color: rgba(255, 255, 255, 0.2);
@@ -124,6 +186,61 @@
     display: flex;
 }
 
+
+.add-to-favorites {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-family: 'Arial', sans-serif;
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.add-to-favorites:before {
+    content: "♥";
+    display: block;
+    transform: scale(1.2);
+}
+
+.add-to-favorites:hover {
+    background-color: #EA3C53;
+}
+
+.add-to-favorites:disabled {
+    background-color: #EA3C53;
+    cursor: default;
+}
+
+.tab {
+  margin-bottom: 20px;
+}
+
+.tab button {
+  background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-right: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab button.active {
+   border-bottom: 2px solid #286bc7;
+}
+=======
 /* Style for the event image */
 .event-tile img {
     max-width: 200px; /* Set the maximum width of the image */
