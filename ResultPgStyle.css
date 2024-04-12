@@ -186,6 +186,7 @@
     display: flex;
 }
 
+
 .add-to-favorites {
     position: absolute;
     bottom: 10px;
@@ -238,4 +239,43 @@
 
 .tab button.active {
    border-bottom: 2px solid #286bc7;
+}
+=======
+/* Style for the event image */
+.event-tile img {
+    max-width: 200px; /* Set the maximum width of the image */
+    max-height: 200px; /* Set the maximum height of the image */
+    width: auto; /* Ensure the image width adjusts proportionally */
+    height: auto; /* Ensure the image height adjusts proportionally */
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+    object-fit: contain; /* Fit the image inside the fixed size slot */
+}
+
+/* Style for the event tile */
+.event-tile {
+    border: 1px solid #ddd; /* Add a border for each event tile */
+    padding: 10px; /* Add padding around each event tile */
+    margin-bottom: 20px; /* Add margin between each event tile */
+    position: relative; /* Set position to relative for absolute positioning of button */
+    background-color: rgba(50, 50, 50, 0.8); /* Dark grey transparent background */
+    color: #cac7ff; /* Text color */
+}
+
+/* Style for the favorite button */
+.event-tile .add-to-favorites {
+    position: absolute; /* Set position to absolute */
+    bottom: 10px; /* Position the button 10px from the bottom */
+    right: 10px; /* Position the button 10px from the right */
+}
+
+/* Style for the event image */
+.event-tile img {
+    max-width: 200px; /* Set the maximum width of the image */
+    max-height: 200px; /* Set the maximum height of the image */
+    width: auto; /* Ensure the image width adjusts proportionally */
+    height: auto; /* Ensure the image height adjusts proportionally */
+    display: block; /* Make the image a block element */
+    margin: 0 auto 10px; /* Center the image horizontally and add bottom margin */
+    object-fit: contain; /* Fit the image inside the fixed size slot */
 }
