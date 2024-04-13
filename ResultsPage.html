@@ -110,6 +110,9 @@ function addToFavorites(button) {
     const eventTitleElement = button.parentNode.querySelector('.event-title');
     textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
 
+    // Remove everything after and including the first "-" or ":"
+    textContent = textContent.replace(/\d+\.\s*(.*?)[\:\-]/, '$1').trim();
+
     const eventDateElement = button.parentNode.querySelector('.event-date');
     const eventTimeElement = button.parentNode.querySelector('.event-time');
     const eventDate = eventDateElement ? eventDateElement.textContent : '';
