@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="ResultPgStyle.css">
+
     <script src="background.js"></script>
 </head>
 <body>
@@ -190,6 +191,11 @@ function openTab(evt, tabName) {
         if (sessionStorage.getItem(eventTitle) === 'disabled') {
             button.disabled = true;
         }
+        const location = localStorage.getItem('location');
+    if(location) {
+        const locationElement = document.querySelector('.header h1 .blue-text');
+        locationElement.textContent = ` ${location}`; // Sets the location text in the <h1>
+    }
     });
    });
 

@@ -5,24 +5,25 @@ const path = require('path');
 const app = express();
 const port = 3001; // You can use any available port
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('.')); // Serve static files from 'public' directory
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'Homepage.html'));
 });
-
 const fetchTicketmasterEvents = async (query, location, date) => {
-  const apiKey = 'key'; // Securely store and use your API key
-  const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&keyword=${encodeURIComponent(query)}&city=${encodeURIComponent(location)}&date=${encodeURIComponent(date)}`;
-  try {
+    const apiKey = 'key'; // Securely store and use your API key
+    let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&keyword=${encodeURIComponent(query)}`;
+    if (location) {
+        url += `&city=${encodeURIComponent(location)}`;
+    }
+    if (date) {
+        url += `&date=${encodeURIComponent(date)}`;
+    }  try {
       const response = await axios.get(url);
       if (response.data && response.data._embedded && response.data._embedded.events) {
           const events = response.data._embedded.events;
       // Sort events by date
           events.sort((a, b) => new Date(a.dates.start.localDate) - new Date(b.dates.start.localDate));
-
       // Map and process each event to extract relevant details
           return events.map(event => {
             const eventName = event.name;
@@ -53,7 +54,6 @@ const fetchTicketmasterEvents = async (query, location, date) => {
       return null; // Return null or throw an error as per your error handling policy
       }
 };
-
 // Route to handle form submission
 app.get('/search-hobbies', async (req, res) => {
     const query = req.query.q;
@@ -87,7 +87,6 @@ app.get('/search-hobbies', async (req, res) => {
                 }
             }
         );
-
             // Assuming the response contains the data you want to display
         const completionText = response.data.choices[0].message.content;
         const formattedData = formatEventData(ticketmasterData, completionText);
@@ -98,7 +97,6 @@ app.get('/search-hobbies', async (req, res) => {
         res.send('Error retrieving suggestions. Please try again.');
     }
 });
-
 function formatEventData(ticketmasterData, completionText) {
     return {
       suggestions: completionText.trim().split('\n').map(line => line.trim()),
@@ -112,7 +110,6 @@ function formatEventData(ticketmasterData, completionText) {
       }))
   };
 }
-
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
