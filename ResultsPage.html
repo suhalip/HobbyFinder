@@ -104,25 +104,27 @@
         }
     }
 
-    function addToFavorites(button) {
+function addToFavorites(button) {
     let textContent;
 
     const eventTitleElement = button.parentNode.querySelector('.event-title');
     textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
 
-    // Remove everything after and including the first "-" or ":"
-    textContent = textContent.replace(/\d+\.\s*(.*?)[\:\-]/, '$1').trim();
+    const eventDateElement = button.parentNode.querySelector('.event-date');
+    const eventTimeElement = button.parentNode.querySelector('.event-time');
+    const eventDate = eventDateElement ? eventDateElement.textContent : '';
+    const eventTime = eventTimeElement ? eventTimeElement.textContent : '';
 
     const favoritesList = document.getElementById('favorites');
     let isDuplicate = false;
     favoritesList.querySelectorAll('li').forEach((li) => {
-        if (li.textContent.trim() === textContent.trim()) {
+        if (li.textContent.trim() === `${textContent} - ${eventDate} ${eventTime}`) {
             isDuplicate = true;
         }
     });
     if (!isDuplicate) {
         const listItem = document.createElement('li');
-        listItem.textContent = textContent;
+        listItem.textContent = `${textContent} - ${eventDate} ${eventTime}`;
         favoritesList.appendChild(listItem);
         saveFavorites(); // Save the updated favorites list
     }
@@ -130,6 +132,7 @@
     const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
     sessionStorage.setItem(eventTitle, 'disabled');
 }
+
 
 
     function saveFavorites() {
