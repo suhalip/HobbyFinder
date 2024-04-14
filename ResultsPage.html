@@ -65,7 +65,6 @@
         `;
         eventsContainer.appendChild(eventElement);
     });
-
     updateFavoriteButtons();
 }
 
@@ -96,7 +95,7 @@
         `;
         suggestionsContainer.appendChild(tile);
     });
-        updateFavoriteButtons();
+    updateFavoriteButtons();
 }
 
     function saveFavorites() {
@@ -117,49 +116,69 @@ function loadFavorites() {
     }
 }
 function addToFavorites(button) {
-    let textContent;
+    let textContent, identifier;
 
     const eventTitleElement = button.parentNode.querySelector('.event-title');
     const eventDateElement = button.parentNode.querySelector('.event-date');
     const eventTimeElement = button.parentNode.querySelector('.event-time');
-    const eventDate = eventDateElement ? eventDateElement.textContent : '';
-    const eventTime = eventTimeElement ? eventTimeElement.textContent : '';
 
-    textContent = eventTitleElement ? eventTitleElement.textContent : button.previousElementSibling.textContent.trim();
+    if (eventTitleElement) {
+        // For events
+        const eventTitle = eventTitleElement.textContent.trim();
+        const eventDate = eventDateElement ? eventDateElement.textContent.split(': ')[1].trim() : '';
+        const eventTime = eventTimeElement ? eventTimeElement.textContent.split(': ')[1].trim() : '';
+        textContent = `${eventTitle} - ${eventDate} ${eventTime}`;
+        identifier = `event-${eventTitle.replace(/\s+/g, '_')}-${eventDate.replace(/\s+/g, '_')}-${eventTime.replace(/\s+/g, '_')}`;
+    } else {
+        // For suggestions
+        textContent = button.previousElementSibling.textContent.trim();
+        identifier = `suggestion-${textContent.replace(/\s+/g, '_')}`;
+    }
 
-    textContent = textContent.replace(/^\d+\.\s*([A-Za-z\s]+):.*$/, '$1').trim()
     const favoritesList = document.getElementById('favorites');
-    let isDuplicate = false;
-    favoritesList.querySelectorAll('li').forEach((li) => {
-        if (li.textContent.trim() === `${textContent} - ${eventDate} ${eventTime}`) {
-            isDuplicate = true;
-        }
-    });
+    let isDuplicate = Array.from(favoritesList.querySelectorAll('li')).some(li => li.textContent === textContent);
+
     if (!isDuplicate) {
         const listItem = document.createElement('li');
-        listItem.textContent = `${textContent}. ${eventDate} ${eventTime}`;
+        listItem.textContent = textContent;
         favoritesList.appendChild(listItem);
-        saveFavorites(); // Save the updated favorites list
+        saveFavorites();
     }
+
     button.disabled = true;
-    const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
-    sessionStorage.setItem(eventTitle, 'disabled');
+    sessionStorage.setItem(identifier, 'disabled');
 }
 
+
 function updateFavoriteButtons() {
-    const buttons = document.querySelectorAll('.add-to-favorites');
-    buttons.forEach(button => {
+    document.querySelectorAll('.add-to-favorites').forEach(button => {
+        let identifier;
         const eventInfoElement = button.parentNode;
         const eventTitleElement = eventInfoElement.querySelector('.event-title');
-        const eventTitle = eventTitleElement ? eventTitleElement.textContent.trim() : '';
+        const eventDateElement = eventInfoElement.querySelector('.event-date');
+        const eventTimeElement = eventInfoElement.querySelector('.event-time');
 
-        if (sessionStorage.getItem(eventTitle) === 'disabled') {
-            button.disabled = true;
+        if (eventTitleElement) {
+            // For events
+            const eventTitle = eventTitleElement.textContent.trim();
+            const eventDate = eventDateElement ? eventDateElement.textContent.split(': ')[1].trim() : '';
+            const eventTime = eventTimeElement ? eventTimeElement.textContent.split(': ')[1].trim() : '';
+            identifier = `event-${eventTitle.replace(/\s+/g, '_')}-${eventDate.replace(/\s+/g, '_')}-${eventTime.replace(/\s+/g, '_')}`;
         } else {
+            // For suggestions
+            const suggestion = button.previousElementSibling.textContent.trim();
+            identifier = `suggestion-${suggestion.replace(/\s+/g, '_')}`;
+        }
+
+        if (sessionStorage.getItem(identifier) === 'disabled') {
+            button.disabled = true;
+        }else {
             button.disabled = false;
         }
     });
 }
+
+
 
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
