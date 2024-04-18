@@ -20,7 +20,7 @@
     </header>
     <div class="container">
         <form id="search_form" action="/search-hobbies" method="get" class="search-bar" >
-            <div id="suggestions-dropdown" style="display:none;"></div>
+            <div id="suggestions-dropdown"></div>
             <input type="text" placeholder="Search hobbies..." name="q" />
             <button type="submit"><img src="images/search.png" /></button>
         </form>
@@ -89,21 +89,23 @@
     }
 
     function fetchDataAndRedirect(query, location, date) {
-        fetch(`/search-hobbies?q=${encodeURIComponent(query)}&l=${encodeURIComponent(location)}&date=${encodeURIComponent(date)}`)
-            .then(response => response.json())
-            .then(data => {
-                setTimeout(() => { // Give a slight delay for visual completion
-                    localStorage.setItem('formattedData', JSON.stringify(data));
-                    window.location.href = 'ResultsPage.html'; // Redirect to the results page
-                }, 5); // Redirect after a 1-second delay
-            })
-        .catch(error => {
-            console.error('Error:', error);
-            const loadingBarContainer = document.getElementById('loading-bar-container');
-            loadingBarContainer.style.display = 'none'; // Hide the loading bar container
-            }
-        );
-    }
+    fetch(`/search-hobbies?q=${encodeURIComponent(query)}&l=${encodeURIComponent(location)}&date=${encodeURIComponent(date)}`)
+        .then(response => response.json())
+        .then(data => {
+            setTimeout(() => { // Give a slight delay for visual completion
+                localStorage.setItem('formattedData', JSON.stringify(data));
+                localStorage.setItem('location', location); // Store the location entered by the user
+                window.location.href = 'ResultsPage.html'; // Redirect to the results page
+            }, 5); // Redirect after a delay
+        })
+    .catch(error => {
+        console.error('Error:', error);
+        const loadingBarContainer = document.getElementById('loading-bar-container');
+        loadingBarContainer.style.display = 'none'; // Hide the loading bar container
+        }
+    );
+}
+
 </script>
 </body>
 </html>

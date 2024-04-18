@@ -81,8 +81,6 @@
     z-index: 2;
 }
 
-
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -93,39 +91,36 @@
 }
 
 #suggestions-dropdown {
-  position: absolute;
-  top: 225%;
-  width: calc(100% - 42px);
-  max-height: 300px;
-  overflow-y: auto;
-  background-color: white;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 2;
-  display: none;
-  cursor: pointer;
-  animation: fadeIn 0.3s ease-in-out;
+    position: absolute;
+    top: 225%;
+    width: calc(100% - 42px);
+    max-height: 300px;
+    overflow-y: auto;
+    color: #cac7ff;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    display: none; /* Removed duplicate display property */
+    cursor: pointer;
+    animation: fadeIn 0.3s ease-in-out;
+    border-bottom: 1px solid #2c2f31;
+    /* Removed transition property that was applied to the whole dropdown */
 }
 
-.suggestion-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid #2c2f31;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  font-size: 14px;
-  color: #cac7ff;
+/* This rule is to remove the border from the last child, presumably the last item in the dropdown */
+#suggestions-dropdown:last-child {
+    border-bottom: none;
 }
 
-.suggestion-item:last-child {
-  border-bottom: none;
-}
-
+/* New rule for individual suggestion items hover and focus states */
 .suggestion-item:hover, .suggestion-item:focus {
-  background-color: #249D9F;
-  color: #fff;
-    transform: scale(1.02);
+    background-color: #249D9F; /* Background color for hover or focus */
+    color: #fff; /* Text color for hover or focus */
+    transform: scale(1.02); /* Slight scale up for effect */
+    transition: background-color 0.2s ease-in-out; /* Smooth transition for background color */
 }
+
 
 #loading-bar-container{
     width: 70%;
@@ -172,7 +167,7 @@ background: transparent !important;
     width: 350px;
     position: fixed;
     bottom: -120px;
-    left: 35%;
+    left: 0%;
     transform: translateX(-50%);
     display: none;
     transition: bottom 0.5s;
@@ -182,3 +177,5 @@ background: transparent !important;
     width: 100%;
     height: auto;
 }
+
+
