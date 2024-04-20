@@ -95,16 +95,33 @@
             setTimeout(() => { // Give a slight delay for visual completion
                 localStorage.setItem('formattedData', JSON.stringify(data));
                 localStorage.setItem('location', location); // Store the location entered by the user
+
+                // Clear input fields
+                clearInputFields();
+
+                // Hide the loading bar before redirecting
+                const loadingBarContainer = document.getElementById('loading-bar-container');
+                loadingBarContainer.style.display = 'none';
+
                 window.location.href = 'ResultsPage.html'; // Redirect to the results page
-            }, 5); // Redirect after a delay
+            }, 500); // Increased delay to visibly complete the loading process
         })
-    .catch(error => {
-        console.error('Error:', error);
-        const loadingBarContainer = document.getElementById('loading-bar-container');
-        loadingBarContainer.style.display = 'none'; // Hide the loading bar container
-        }
-    );
+        .catch(error => {
+            console.error('Error:', error);
+
+            // Clear input fields on error as well
+            clearInputFields();
+
+            const loadingBarContainer = document.getElementById('loading-bar-container');
+            loadingBarContainer.style.display = 'none'; // Hide the loading bar container on error as well
+        });
 }
+
+function clearInputFields() {
+    document.getElementById('search_form').reset();  // Reset the form to clear all input fields
+}
+
+
 
 </script>
 </body>
